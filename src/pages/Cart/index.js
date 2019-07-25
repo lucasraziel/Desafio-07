@@ -52,7 +52,7 @@ function Cart({ cart }) {
                   <TouchableOpacity>
                     <Icon name="add-circle" size={18} color="#7159c1" />
                   </TouchableOpacity>
-                  <InputTextQuantity value="3" />
+                  <InputTextQuantity value={`${item.amount}`} />
                   <TouchableOpacity>
                     <Icon name="remove-circle" size={18} color="#7159c1" />
                   </TouchableOpacity>
