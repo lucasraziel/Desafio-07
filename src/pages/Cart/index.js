@@ -30,7 +30,7 @@ import {
 
 import { formatPrice } from '../../util/format';
 
-function Cart({ cart, removeFromCart, updateAmount }) {
+function Cart({ cart, total, removeFromCart, updateAmount }) {
   function increment(product) {
     updateAmount(product.id, product.amount + 1);
   }
@@ -66,14 +66,14 @@ function Cart({ cart, removeFromCart, updateAmount }) {
                     <Icon name="add-circle" size={18} color="#7159c1" />
                   </TouchableOpacity>
                 </Quantity>
-                <Subtotal>{formatPrice(543)}</Subtotal>
+                <Subtotal>{item.subtotal}</Subtotal>
               </PriceAndQuantity>
             </ItemCart>
           )}
         />
         <TotalContainer>
           <TotalText>Total</TotalText>
-          <TotalPrice>{formatPrice(2500)}</TotalPrice>
+          <TotalPrice>{total}</TotalPrice>
           <ButtonFinish>
             <ButtonFinishText>FINALIZAR PEDIDO</ButtonFinishText>
           </ButtonFinish>
@@ -84,13 +84,22 @@ function Cart({ cart, removeFromCart, updateAmount }) {
 }
 
 Cart.propTypes = {
-  cart: PropTypes.isRequired,
+  cart: PropTypes.array.isRequired,
   removeFromCart: PropTypes.func.isRequired,
   updateAmount: PropTypes.func.isRequired,
+  total: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = state => ({
-  cart: state.cart,
+  cart: state.cart.map(product => ({
+    ...product,
+    subtotal: formatPrice(product.price * product.amount),
+  })),
+  total: formatPrice(
+    state.cart.reduce((total, product) => {
+      return total + product.price * product.amount;
+    }, 0)
+  ),
 });
 
 const mapDispatchToProps = dispatch =>
