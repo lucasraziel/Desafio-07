@@ -34,7 +34,7 @@ class Main extends Component {
 
   static propTypes = {
     addToCartRequest: PropTypes.func.isRequired,
-    amount: PropTypes.isRequired,
+    amount: PropTypes.any.isRequired,
   };
 
   async componentDidMount() {
