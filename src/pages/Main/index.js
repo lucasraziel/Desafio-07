@@ -33,7 +33,7 @@ class Main extends Component {
   };
 
   static propTypes = {
-    addToCart: PropTypes.func.isRequired,
+    addToCartRequest: PropTypes.func.isRequired,
     amount: PropTypes.isRequired,
   };
 
@@ -46,10 +46,9 @@ class Main extends Component {
     this.setState({ shopList: data });
   }
 
-  handleAddProduct = product => {
-    const { addToCart } = this.props;
-
-    addToCart(product);
+  handleAddProduct = id => {
+    const { addToCartRequest } = this.props;
+    addToCartRequest(id);
   };
 
   render() {
@@ -66,7 +65,7 @@ class Main extends Component {
               <ProductImage source={{ uri: item.image }} />
               <TextDescription>{item.title}</TextDescription>
               <Price>{item.priceFormatted}</Price>
-              <ButtonAdd onPress={() => this.handleAddProduct(item)}>
+              <ButtonAdd onPress={() => this.handleAddProduct(item.id)}>
                 <BasketDetails>
                   <Icon name="shopping-basket" color="#FFF" size={24} />
                   <QuantityAdded>{amount[item.id] || 0}</QuantityAdded>
