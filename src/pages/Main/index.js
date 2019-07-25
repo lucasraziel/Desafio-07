@@ -2,9 +2,13 @@ import React, { Component } from 'react';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
+import { bindActionCreators } from 'redux';
+
 import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
+
+import * as CartActions from '../../store/modules/cart/actions';
 
 import {
   Container,
@@ -29,7 +33,7 @@ class Main extends Component {
   };
 
   static propTypes = {
-    dispatch: PropTypes.func.isRequired,
+    addToCart: PropTypes.func.isRequired,
   };
 
   async componentDidMount() {
@@ -42,12 +46,9 @@ class Main extends Component {
   }
 
   handleAddProduct = product => {
-    const { dispatch } = this.props;
+    const { addToCart } = this.props;
 
-    dispatch({
-      type: 'ADD_TO_CART',
-      product,
-    });
+    addToCart(product);
   };
 
   render() {
@@ -80,4 +81,10 @@ class Main extends Component {
   }
 }
 
-export default connect()(Main);
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(CartActions, dispatch);
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(Main);
