@@ -15,6 +15,8 @@ import {
   AddText,
 } from './styles';
 
+import { formatPrice } from '../../util/format';
+
 export default class Main extends Component {
   state = {
     shopList: [
@@ -75,7 +77,7 @@ export default class Main extends Component {
             <ItemShop>
               <ProductImage source={{ uri: item.image }} />
               <TextDescription>{item.title}</TextDescription>
-              <Price>{item.price}</Price>
+              <Price>{formatPrice(item.price)}</Price>
               <ButtonAdd>
                 <BasketDetails>
                   <Icon name="shopping-basket" color="#FFF" size={24} />
