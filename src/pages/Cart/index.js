@@ -30,7 +30,14 @@ import {
 
 import { formatPrice } from '../../util/format';
 
-function Cart({ cart, removeFromCart }) {
+function Cart({ cart, removeFromCart, updateAmount }) {
+  function increment(product) {
+    updateAmount(product.id, product.amount + 1);
+  }
+
+  function decrement(product) {
+    updateAmount(product.id, product.amount - 1);
+  }
   return (
     <Container>
       <CartContainer>
@@ -51,12 +58,12 @@ function Cart({ cart, removeFromCart }) {
               </ItemDetail>
               <PriceAndQuantity>
                 <Quantity>
-                  <TouchableOpacity>
-                    <Icon name="add-circle" size={18} color="#7159c1" />
+                  <TouchableOpacity onPress={() => decrement(item)}>
+                    <Icon name="remove-circle" size={18} color="#7159c1" />
                   </TouchableOpacity>
                   <InputTextQuantity value={`${item.amount}`} />
-                  <TouchableOpacity>
-                    <Icon name="remove-circle" size={18} color="#7159c1" />
+                  <TouchableOpacity onPress={() => increment(item)}>
+                    <Icon name="add-circle" size={18} color="#7159c1" />
                   </TouchableOpacity>
                 </Quantity>
                 <Subtotal>{formatPrice(543)}</Subtotal>
@@ -79,6 +86,7 @@ function Cart({ cart, removeFromCart }) {
 Cart.propTypes = {
   cart: PropTypes.isRequired,
   removeFromCart: PropTypes.func.isRequired,
+  updateAmount: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
