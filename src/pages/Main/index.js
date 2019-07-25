@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
+import PropTypes from 'prop-types';
+
+import { connect } from 'react-redux';
+
 import {
   Container,
   ShoppingList,
@@ -19,9 +23,13 @@ import {
 import { formatPrice } from '../../util/format';
 import api from '../../services/api';
 
-export default class Main extends Component {
+class Main extends Component {
   state = {
     shopList: [],
+  };
+
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
   };
 
   async componentDidMount() {
@@ -32,6 +40,15 @@ export default class Main extends Component {
     }));
     this.setState({ shopList: data });
   }
+
+  handleAddProduct = product => {
+    const { dispatch } = this.props;
+
+    dispatch({
+      type: 'ADD_TO_CART',
+      product,
+    });
+  };
 
   render() {
     const { shopList } = this.state;
@@ -46,7 +63,7 @@ export default class Main extends Component {
               <ProductImage source={{ uri: item.image }} />
               <TextDescription>{item.title}</TextDescription>
               <Price>{item.priceFormatted}</Price>
-              <ButtonAdd>
+              <ButtonAdd onPress={() => this.handleAddProduct(item)}>
                 <BasketDetails>
                   <Icon name="shopping-basket" color="#FFF" size={24} />
                   <QuantityAdded>0</QuantityAdded>
@@ -62,3 +79,5 @@ export default class Main extends Component {
     );
   }
 }
+
+export default connect()(Main);
